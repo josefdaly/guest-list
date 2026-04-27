@@ -484,6 +484,10 @@
               <span class="detail-value">{{ event.date|date:"l, F j, Y" }}</span>
             </div>
             <div class="detail-row">
+              <span class="detail-label">&#128336; Time:</span>
+              <span class="detail-value">{{ event.time|time:"g:i A" }}</span>
+            </div>
+            <div class="detail-row">
               <span class="detail-label">&#128205; Venue:</span>
               <span class="detail-value">{{ event.location_name }}</span>
             </div>
@@ -527,18 +531,22 @@
         <!-- Music player -->
         <div class="section">
           <div class="section-header">&#9835; Event Playlist</div>
-          <div class="section-body">
-            <div class="music-player">
-              <div class="music-title blink">&#9654; NOW PLAYING...</div>
-              <div class="music-bar">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span>
+          <div class="section-body" style="padding:0;">
+            {% if event.music_url %}
+              {{ event.music_url|safe }}
+            {% else %}
+              <div class="music-player">
+                <div class="music-title blink">&#9654; NOW PLAYING...</div>
+                <div class="music-bar">
+                  <span></span><span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="music-label">
+                  &#9835; no track set<br>
+                  <span style="color:#223344;">[ auto-play enabled ]</span>
+                </div>
               </div>
-              <div class="music-label">
-                &#9835; pump up the jam - technotronic<br>
-                <span style="color:#223344;">[ auto-play enabled ]</span>
-              </div>
-            </div>
+            {% endif %}
           </div>
         </div>
 

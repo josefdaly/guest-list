@@ -4,10 +4,12 @@ from django.db import models
 class Event(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField()
+    time = models.TimeField()
     location_name = models.CharField(max_length=255)
     location_address = models.CharField(max_length=255)
     contact_email = models.EmailField()
     profile_photo = models.URLField()
+    music_url = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
@@ -28,7 +30,7 @@ class EventPost(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='Other')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
     class Meta:
         ordering = ['-created_at']
 
