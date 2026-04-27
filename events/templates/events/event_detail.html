@@ -339,9 +339,9 @@
       gap: 6px;
       text-align: center;
     }
-    .top8-item { font-size: 10px; color: #aaccdd; }
+    .top8-item { font-size: 11px; color: #aaccdd; }
     .top8-avatar {
-      width: 50px; height: 50px;
+      width: 70px; height: 70px;
       background: #001a33;
       border: 1px solid #33669955;
       margin: 0 auto 3px;
@@ -349,6 +349,10 @@
       align-items: center;
       justify-content: center;
       font-size: 24px;
+      overflow: hidden;
+    }
+    .top8-avatar img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
     .top8-name { font-size: 10px; color: #66bbff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .top8-status        { font-size: 9px; }
@@ -691,7 +695,13 @@
               <div class="top8-grid">
                 {% for guest in guests %}
                   <div class="top8-item">
-                    <div class="top8-avatar">&#128100;</div>
+                    <div class="top8-avatar">
+                    {% if guest.profile_photo_url %}
+                      <img src="{{ guest.profile_photo_url }}" alt="{{ guest.first_name }}">
+                    {% else %}
+                      &#128100;
+                    {% endif %}
+                  </div>
                     <div class="top8-name">{{ guest.first_name }} {{ guest.last_name }}</div>
                     {% if guest.rsvp_status == True %}
                       <div class="top8-status yes">&#10003; going</div>
