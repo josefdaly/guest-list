@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ event.name }} - MySpace</title>
   <style>
     /* ===== BASE ===== */
@@ -500,6 +501,58 @@
       border: none;
       border-top: 1px solid #1a2a3a;
       margin: 8px 0;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 640px) {
+      #topbar { gap: 10px; flex-wrap: wrap; padding: 8px 12px; }
+      #topbar .logo { font-size: 20px; width: 100%; margin-bottom: 2px; }
+      #topbar a { font-size: 12px; }
+
+      #profile-header { flex-direction: column; align-items: center; text-align: center; }
+      #profile-pic { width: 100px; height: 100px; }
+      #profile-name { font-size: 22px; }
+      #profile-tagline { font-size: 13px; }
+      .mood-box { font-size: 12px; }
+      #profile-info > div:nth-child(4) { font-size: 13px; }
+
+      #main-table,
+      #main-table tbody,
+      #main-table tr { display: block; width: 100%; }
+      #col-left, #col-right { display: block; width: 100%; }
+
+      .section-header { font-size: 13px; padding: 6px 10px; }
+      .section-body { font-size: 14px; padding: 12px; line-height: 1.8; }
+
+      .detail-label { font-size: 13px; min-width: 80px; }
+      .detail-value { font-size: 13px; }
+      .detail-row { margin-bottom: 6px; }
+
+      .glitter-header { font-size: 18px; }
+
+      .cbtn { font-size: 13px; padding: 8px 10px; }
+      .cbtn-icon { font-size: 16px; }
+      .contact-table td { padding: 3px; }
+
+      .top8-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .top8-avatar { width: 80px; height: 80px; }
+      .top8-name { font-size: 12px; }
+      .top8-status { font-size: 11px; }
+
+      .blog-post-title { font-size: 15px; }
+      .blog-post-meta { font-size: 11px; }
+      .blog-post-body { font-size: 13px; }
+
+      .comment { font-size: 13px; }
+      .comment-avatar { width: 48px; height: 48px; }
+      .comment-name { font-size: 13px; }
+      .comment-text { font-size: 13px; }
+
+      #uc-dialog { width: 92vw; }
+
+      #counter-display { font-size: 18px; letter-spacing: 4px; }
+
+      marquee { font-size: 13px; }
     }
   </style>
 </head>
