@@ -517,9 +517,11 @@
       #profile-info > div:nth-child(4) { font-size: 13px; }
 
       #main-table,
-      #main-table tbody,
-      #main-table tr { display: block; width: 100%; }
-      #col-left, #col-right { display: block; width: 100%; }
+      #main-table tbody { display: block; width: 100%; }
+      #main-table tr { display: flex; flex-direction: column; width: 100%; }
+      #col-left, #col-right { display: contents; }
+      #section-music { order: 10; }
+      #section-counter { order: 11; }
 
       .section-header { font-size: 13px; padding: 6px 10px; }
       .section-body { font-size: 14px; padding: 12px; line-height: 1.8; }
@@ -693,7 +695,7 @@
 
 
         <!-- Music player -->
-        <div class="section">
+        <div class="section" id="section-music">
           <div class="section-header">&#9835; Event Playlist</div>
           <div class="section-body" style="padding:0;">
             {% if event.music_url %}
@@ -715,7 +717,7 @@
         </div>
 
         <!-- Visitor counter -->
-        <div class="section">
+        <div class="section" id="section-counter">
           <div class="section-header">&#128065; Profile Views</div>
           <div class="section-body" style="text-align:center;">
             <div id="counter-display">0001337</div>
