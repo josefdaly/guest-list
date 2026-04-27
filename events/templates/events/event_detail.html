@@ -18,6 +18,21 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%230066cc'/%3E%3C/svg%3E") 10 10, auto;
     }
 
+    {% if event.background_url %}
+    body {
+      background-image: url("{{ event.background_url }}");
+      {% if event.background_display_choice == 'stretched' %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      {% else %}
+      background-size: auto;
+      background-repeat: repeat;
+      {% endif %}
+    }
+    {% endif %}
+
     a { color: #66bbff; text-decoration: none; }
     a:hover { color: #ffffff; text-decoration: underline; }
 
@@ -723,30 +738,30 @@
 
         <!-- Comments -->
         <div class="section">
-          <div class="section-header">&#128172; Comments (3)</div>
+          <div class="section-header">&#128172; Comments ({{ comments.count }})</div>
           <div class="section-body">
-            <div class="comment">
-              <div class="comment-avatar">&#128105;</div>
-              <div>
-                <div class="comment-name">xXx_Party_Gurl_xXx</div>
-                <div class="comment-text">omg i am SOO there!!! cant wait!! &#9829;&#9829;&#9829; see u there bestie!!! lmao</div>
+            {% if comments %}
+              {% for comment in comments %}
+                <div class="comment">
+                  <div class="comment-avatar">
+                    {% if comment.avatar_url %}
+                      <img src="{{ comment.avatar_url }}" alt="{{ comment.username }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    {% else %}
+                      &#128100;
+                    {% endif %}
+                  </div>
+                  <div>
+                    <div class="comment-name">{{ comment.username }}</div>
+                    <div class="comment-text">{{ comment.post }}</div>
+                  </div>
+                </div>
+              {% endfor %}
+              <hr class="myspace">
+            {% else %}
+              <div style="text-align:center; color:#334455; font-size:11px; font-style:italic; margin-bottom:8px;">
+                No comments yet!! be the first lol
               </div>
-            </div>
-            <div class="comment">
-              <div class="comment-avatar">&#128104;</div>
-              <div>
-                <div class="comment-name">sk8er_boi_2003</div>
-                <div class="comment-text">yo this is gonna be sick... bringing my crew!! woooooo</div>
-              </div>
-            </div>
-            <div class="comment">
-              <div class="comment-avatar">&#128105;</div>
-              <div>
-                <div class="comment-name">glitter_princess_&#9733;</div>
-                <div class="comment-text">&#9733;&#9733;&#9733; added 2 my faves!! ur page is amazin btw how did u get it like this??</div>
-              </div>
-            </div>
-            <hr class="myspace">
+            {% endif %}
             <div style="text-align:center;">
               <a href="#" style="font-size:11px;">&#9998; Add Comment</a>
             </div>

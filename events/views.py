@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 
-from .models import Event, EventPost
+from .models import Event, EventComment, EventPost
 
 
 def event_detail(request, event_id):
@@ -11,6 +11,7 @@ def event_detail(request, event_id):
     pending = guests.filter(rsvp_status__isnull=True)
     total_attending = sum(g.additional_confirmed + 1 for g in confirmed)
     posts = event.posts.all()
+    comments = EventComment.objects.filter(event=event, approved=True)
     return render(request, 'events/event_detail.html', {
         'event': event,
         'guests': guests,
@@ -19,4 +20,5 @@ def event_detail(request, event_id):
         'pending': pending,
         'total_attending': total_attending,
         'posts': posts,
+        'comments': comments,
     })
