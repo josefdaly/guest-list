@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ event.name }} - MySpace</title>
+  <style>
+    /* ===== BASE ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #000033;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, #001a4d 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, #000a2e 0%, transparent 60%);
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      color: #aaccee;
+      min-height: 100vh;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%230066cc'/%3E%3C/svg%3E") 10 10, auto;
+    }
+
+    a { color: #66bbff; text-decoration: none; }
+    a:hover { color: #ffffff; text-decoration: underline; }
+
+    /* ===== ANIMATED BACKGROUND STARS ===== */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.1; }
+      to   { opacity: 1; }
+    }
+
+    /* ===== TOP NAV BAR ===== */
+    #topbar {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(to bottom, #4477aa, #112244);
+      border-bottom: 2px solid #336699;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      color: #cce4ff;
+    }
+    #topbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: -1px;
+      text-shadow: 0 0 8px #3399ff;
+    }
+    #topbar .logo span { color: #aaddff; }
+    #topbar a { color: #99ccee; font-size: 11px; }
+    #topbar a:hover { color: #fff; }
+
+    /* ===== PAGE WRAPPER ===== */
+    #wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 12px auto;
+      padding: 0 8px;
+    }
+
+    /* ===== PROFILE HEADER ===== */
+    #profile-header {
+      background: linear-gradient(135deg, #001a33 0%, #000a22 100%);
+      border: 2px solid #336699;
+      border-radius: 4px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0 0 20px #33669944;
+    }
+
+    #profile-pic {
+      width: 120px;
+      height: 120px;
+      border: 3px solid #336699;
+      background: #000a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      flex-shrink: 0;
+      box-shadow: 0 0 14px #33669988;
+      animation: glowPulse 2s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 8px #33669988; }
+      to   { box-shadow: 0 0 24px #3399ffcc, 0 0 40px #33669944; }
+    }
+
+    #profile-info { flex: 1; }
+
+    #profile-name {
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 10px #3399ff, 0 0 20px #3399ff;
+      animation: glitterText 1.5s ease-in-out infinite alternate;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    @keyframes glitterText {
+      from { text-shadow: 0 0 8px #3399ff, 0 0 16px #3399ff; }
+      to   { text-shadow: 0 0 16px #00ccff, 0 0 32px #00ccff, 0 0 48px #ffffff44; }
+    }
+
+    #profile-tagline {
+      font-size: 12px;
+      color: #7799bb;
+      margin-bottom: 8px;
+    }
+
+    .mood-box {
+      display: inline-block;
+      background: #001122;
+      border: 1px solid #33669955;
+      padding: 3px 8px;
+      font-size: 11px;
+      color: #99ccee;
+    }
+
+    /* ===== MAIN LAYOUT TABLE ===== */
+    #main-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 8px 0;
+    }
+    #col-left  { width: 300px; vertical-align: top; }
+    #col-right { vertical-align: top; }
+
+    /* ===== SECTION BOXES ===== */
+    .section {
+      background: #000d1a;
+      border: 1px solid #2a5580;
+      margin-bottom: 8px;
+    }
+    .section-header {
+      background: linear-gradient(90deg, #4b7da8, #2a5580);
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #33669944;
+    }
+    .section-body {
+      padding: 10px;
+      font-size: 12px;
+      color: #aaccdd;
+      line-height: 1.7;
+    }
+
+    /* ===== DETAIL ROWS ===== */
+    .detail-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .detail-label {
+      color: #66aadd;
+      font-weight: bold;
+      min-width: 90px;
+      font-size: 11px;
+    }
+    .detail-value {
+      color: #cce4ff;
+      font-size: 11px;
+    }
+
+    /* ===== CONTACT BLOCK ===== */
+    .contact-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .contact-table td {
+      padding: 2px 3px;
+    }
+    .cbtn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(to bottom, #001e3a, #001228);
+      border: 1px solid #2a5580;
+      border-bottom-color: #1a3a55;
+      border-right-color: #1a3a55;
+      padding: 4px 7px;
+      font-size: 11px;
+      color: #66bbff;
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    }
+    .cbtn:hover {
+      background: linear-gradient(to bottom, #002a55, #001a3a);
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .cbtn-icon { font-size: 13px; flex-shrink: 0; }
+
+
+    .rsvp-yes  { color: #22cc66; font-weight: bold; }
+    .rsvp-no   { color: #ee4444; font-weight: bold; }
+    .rsvp-pend { color: #ffaa00; font-weight: bold; }
+
+    /* ===== VISITOR COUNTER ===== */
+    #visitor-counter {
+      text-align: center;
+      font-size: 10px;
+      color: #334455;
+      margin-top: 4px;
+    }
+    #counter-display {
+      display: inline-block;
+      background: #000;
+      border: 1px solid #444;
+      padding: 2px 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #00ff00;
+      letter-spacing: 3px;
+    }
+
+    /* ===== MUSIC PLAYER ===== */
+    .music-player {
+      background: #000;
+      border: 1px solid #33669944;
+      padding: 8px;
+      text-align: center;
+    }
+    .music-title {
+      font-size: 10px;
+      color: #3399cc;
+      margin-bottom: 4px;
+      animation: marquee-blink 1s step-end infinite;
+    }
+    @keyframes marquee-blink {
+      50% { opacity: 0.4; }
+    }
+    .music-bar {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 2px;
+      height: 24px;
+    }
+    .music-bar span {
+      display: inline-block;
+      width: 4px;
+      background: linear-gradient(to top, #0044aa, #00aaff);
+      animation: equalize 0.5s ease infinite alternate;
+    }
+    .music-bar span:nth-child(1) { height: 8px;  animation-delay: 0.0s; }
+    .music-bar span:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+    .music-bar span:nth-child(3) { height: 24px; animation-delay: 0.2s; }
+    .music-bar span:nth-child(4) { height: 12px; animation-delay: 0.3s; }
+    .music-bar span:nth-child(5) { height: 20px; animation-delay: 0.15s; }
+    .music-bar span:nth-child(6) { height: 8px;  animation-delay: 0.25s; }
+    .music-bar span:nth-child(7) { height: 14px; animation-delay: 0.05s; }
+    @keyframes equalize {
+      from { transform: scaleY(0.3); }
+      to   { transform: scaleY(1); }
+    }
+    .music-label { font-size: 9px; color: #334455; margin-top: 4px; }
+
+    /* ===== BLINKING / MARQUEE ===== */
+    .blink {
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    marquee { color: #3399cc; font-size: 11px; }
+
+    /* ===== FOOTER ===== */
+    #footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 9px;
+      color: #223344;
+      padding: 16px 0 24px;
+    }
+
+    /* ===== SPARKLE CURSOR TRAIL ===== */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      animation: sparkle-fade 0.6s ease forwards;
+    }
+    @keyframes sparkle-fade {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* ===== GLITTER SECTION HEADER ===== */
+    .glitter-header {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #3399ff, #00ccff, #3399ff, #ffffff, #3399ff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    /* ===== TOP 8 SECTION ===== */
+    .top8-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+    .top8-item { font-size: 10px; color: #aaccdd; }
+    .top8-avatar {
+      width: 50px; height: 50px;
+      background: #001a33;
+      border: 1px solid #33669955;
+      margin: 0 auto 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .top8-name { font-size: 10px; color: #66bbff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .top8-status        { font-size: 9px; }
+    .top8-status.yes    { color: #22cc66; }
+    .top8-status.no     { color: #ee4444; }
+    .top8-status.pend   { color: #ffaa00; }
+
+    /* ===== BLOG ===== */
+    .blog-post { margin-bottom: 4px; }
+    .blog-post-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #66bbff;
+    }
+    .blog-post-meta {
+      font-size: 9px;
+      color: #446677;
+      margin: 2px 0 5px;
+      font-family: Verdana, Arial, sans-serif;
+    }
+    .blog-post-meta span { color: #3399cc; }
+    .blog-post-meta a { color: #3399cc; }
+    .blog-post-body {
+      font-size: 11px;
+      color: #aaccdd;
+      line-height: 1.6;
+    }
+    .blog-post-footer { font-size: 10px; margin-top: 4px; text-align: right; }
+
+    /* ===== COMMENTS SECTION ===== */
+    .comment {
+      border-bottom: 1px solid #111e2a;
+      padding: 6px 0;
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+    }
+    .comment-avatar {
+      width: 40px; height: 40px;
+      background: #001a33;
+      border: 1px solid #33669944;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .comment-name { color: #66bbff; font-weight: bold; font-size: 10px; }
+    .comment-text { color: #aaccdd; font-size: 11px; margin-top: 2px; }
+
+    /* ===== DIVIDER ===== */
+    hr.myspace {
+      border: none;
+      border-top: 1px solid #1a2a3a;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Star field -->
+<div class="stars" id="stars"></div>
+
+<!-- Top nav bar -->
+<div id="topbar">
+  <div class="logo">My<span>Space</span></div>
+  <a href="#">Home</a>
+  <a href="#">Browse</a>
+  <a href="#">Search</a>
+  <a href="#">Invite</a>
+  <a href="#">Film</a>
+  <a href="#">Mail</a>
+  <a href="#">Blog</a>
+  <a href="#">Favorites</a>
+  <a href="#">Forum</a>
+  <a href="#">Groups</a>
+  <a href="#">Events</a>
+  <a href="#">Videos</a>
+  <a href="#">Music</a>
+  <a href="#">Comedy</a>
+  <a href="#">Classifieds</a>
+  &nbsp;|&nbsp;
+  <a href="#">Sign Up</a>
+  <a href="#">Login</a>
+</div>
+
+<div id="wrapper">
+
+  <!-- Profile header -->
+  <div id="profile-header">
+    <div id="profile-pic">
+      {% if event.profile_photo %}
+        <img src="{{ event.profile_photo }}" alt="{{ event.name }}" style="width:100%; height:100%; object-fit:cover; display:block;">
+      {% else %}
+        &#127881;
+      {% endif %}
+    </div>
+    <div id="profile-info">
+      <div id="profile-name">{{ event.name }}</div>
+      <div id="profile-tagline">
+        {{ event.location_name }} &bull; {{ event.date|date:"F j, Y" }}
+      </div>
+      <div class="mood-box">
+        &#9835;&nbsp; <em>Current mood:</em> <strong style="color:#3399ff;">HYPED xD</strong>
+      </div>
+      <div style="margin-top:8px; font-size:11px; color:#446677;">
+        <span style="color:#3399ff;">&#9733;</span>
+        <a href="#">Add to Friends</a> &nbsp;|&nbsp;
+        <a href="#">Send Message</a> &nbsp;|&nbsp;
+        <a href="#">Block User</a> &nbsp;|&nbsp;
+        <span style="color:#334455;">Last Login: <strong style="color:#7799aa;">{{ event.date|date:"M d, Y" }}</strong></span>
+      </div>
+      <div style="margin-top:6px;">
+        <marquee scrollamount="3">&#10022; Can't wait to see everyone there!!! &#10022; RSVP NOW!! &#10022; It's gonna be EPIC!! &#9829; &#10022;</marquee>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main 2-column layout -->
+  <table id="main-table">
+    <tr>
+
+      <!-- LEFT COLUMN -->
+      <td id="col-left">
+
+        <!-- About Me -->
+        <div class="section">
+          <div class="section-header">&#9733; About This Event</div>
+          <div class="section-body">
+            <div class="glitter-header">{{ event.name }}</div>
+            <div class="detail-row">
+              <span class="detail-label">&#128197; Date:</span>
+              <span class="detail-value">{{ event.date|date:"l, F j, Y" }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">&#128205; Venue:</span>
+              <span class="detail-value">{{ event.location_name }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">&#128506; Address:</span>
+              <span class="detail-value">{{ event.location_address }}</span>
+            </div>
+            <hr class="myspace">
+            <div style="font-size:11px; color:#446677; font-style:italic; text-align:center;">
+              &ldquo;This event is gonna be totally 2 die 4!!!! lol omg brb ttyl&rdquo;
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact block -->
+        <div class="section">
+          <div class="section-header">Contacting {{ event.name }}</div>
+          <div class="section-body" style="padding:4px;">
+            <table class="contact-table">
+              <tr>
+                <td><a href="mailto:{{ event.contact_email }}" class="cbtn"><span class="cbtn-icon">&#9993;</span> Send Message</a></td>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128172;</span> Instant Message</a></td>
+              </tr>
+              <tr>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128100;&#43;</span> RSVP</a></td>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#9733;</span> Add to Favorites</a></td>
+              </tr>
+              <tr>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128228;</span> Forward to Friend</a></td>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128683;</span> Block User</a></td>
+              </tr>
+              <tr>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#9878;</span> Rank User</a></td>
+                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128681;</span> Report</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+
+        <!-- Music player -->
+        <div class="section">
+          <div class="section-header">&#9835; Event Playlist</div>
+          <div class="section-body">
+            <div class="music-player">
+              <div class="music-title blink">&#9654; NOW PLAYING...</div>
+              <div class="music-bar">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+              </div>
+              <div class="music-label">
+                &#9835; pump up the jam - technotronic<br>
+                <span style="color:#223344;">[ auto-play enabled ]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visitor counter -->
+        <div class="section">
+          <div class="section-header">&#128065; Profile Views</div>
+          <div class="section-body" style="text-align:center;">
+            <div id="counter-display">0001337</div>
+            <div style="font-size:9px; color:#223344; margin-top:4px;">visitors since 2003</div>
+          </div>
+        </div>
+
+      </td>
+
+      <!-- RIGHT COLUMN -->
+      <td id="col-right">
+
+        <!-- Blog -->
+        <div class="section">
+          <div class="section-header">&#128221; {{ event.name }}&rsquo;s Blog</div>
+          <div class="section-body">
+            {% if posts %}
+              {% for post in posts %}
+                <div class="blog-post">
+                  <div class="blog-post-title">{{ post.title }}</div>
+                  <div class="blog-post-meta">
+                    Category: <span>{{ post.category }}</span> &bull;
+                    {{ post.created_at|date:"M j, Y g:i A" }}
+                  </div>
+                  <div class="blog-post-body">{{ post.content }}</div>
+                  <div class="blog-post-footer"><a href="#">Read More &raquo;</a></div>
+                </div>
+                {% if not forloop.last %}<hr class="myspace">{% endif %}
+              {% endfor %}
+              <hr class="myspace">
+              <div style="text-align:right; font-size:10px;"><a href="#">View All Blog Entries &raquo;</a></div>
+            {% else %}
+              <div style="text-align:center; color:#334455; font-size:11px; font-style:italic;">
+                No blog entries yet!!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Guest List as Top 8 grid -->
+        <div class="section">
+          <div class="section-header">&#128101; {{ event.name }}&rsquo;s Friends ({{ guests.count }})</div>
+          <div class="section-body">
+            {% if guests %}
+              <div class="top8-grid">
+                {% for guest in guests %}
+                  <div class="top8-item">
+                    <div class="top8-avatar">&#128100;</div>
+                    <div class="top8-name">{{ guest.first_name }} {{ guest.last_name }}</div>
+                    {% if guest.rsvp_status == True %}
+                      <div class="top8-status yes">&#10003; going</div>
+                    {% elif guest.rsvp_status == False %}
+                      <div class="top8-status no">&#10007; no</div>
+                    {% else %}
+                      <div class="top8-status pend">? maybe</div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div style="text-align:center; color:#334455; font-size:11px; font-style:italic;">
+                No guests added yet!!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Comments -->
+        <div class="section">
+          <div class="section-header">&#128172; Comments (3)</div>
+          <div class="section-body">
+            <div class="comment">
+              <div class="comment-avatar">&#128105;</div>
+              <div>
+                <div class="comment-name">xXx_Party_Gurl_xXx</div>
+                <div class="comment-text">omg i am SOO there!!! cant wait!! &#9829;&#9829;&#9829; see u there bestie!!! lmao</div>
+              </div>
+            </div>
+            <div class="comment">
+              <div class="comment-avatar">&#128104;</div>
+              <div>
+                <div class="comment-name">sk8er_boi_2003</div>
+                <div class="comment-text">yo this is gonna be sick... bringing my crew!! woooooo</div>
+              </div>
+            </div>
+            <div class="comment">
+              <div class="comment-avatar">&#128105;</div>
+              <div>
+                <div class="comment-name">glitter_princess_&#9733;</div>
+                <div class="comment-text">&#9733;&#9733;&#9733; added 2 my faves!! ur page is amazin btw how did u get it like this??</div>
+              </div>
+            </div>
+            <hr class="myspace">
+            <div style="text-align:center;">
+              <a href="#" style="font-size:11px;">&#9998; Add Comment</a>
+            </div>
+          </div>
+        </div>
+
+      </td>
+
+    </tr>
+  </table>
+
+</div>
+
+<div id="footer">
+  &copy; 2003 MySpace Inc. &bull; <a href="#" style="color:#223344;">About</a> &bull;
+  <a href="#" style="color:#223344;">FAQ</a> &bull;
+  <a href="#" style="color:#223344;">Terms</a> &bull;
+  <a href="#" style="color:#223344;">Privacy</a> &bull;
+  <a href="#" style="color:#223344;">Safety Tips</a>
+</div>
+
+<script>
+  // Generate star field
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left   = Math.random() * 100 + '%';
+    s.style.top    = Math.random() * 100 + '%';
+    s.style.animationDelay    = (Math.random() * 2) + 's';
+    s.style.animationDuration = (1 + Math.random() * 3) + 's';
+    starsEl.appendChild(s);
+  }
+
+  // Cursor sparkle trail
+  const colors = ['#3399ff','#00ccff','#ffffff','#66bbff','#0066cc','#aaddff'];
+  document.addEventListener('mousemove', function(e) {
+    const spark = document.createElement('div');
+    spark.className = 'sparkle';
+    spark.style.left = (e.clientX - 4) + 'px';
+    spark.style.top  = (e.clientY - 4) + 'px';
+    spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(spark);
+    setTimeout(() => spark.remove(), 600);
+  });
+</script>
+
+</body>
+</html>
