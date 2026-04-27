@@ -19,7 +19,8 @@ class Event(models.Model):
     profile_photo = models.URLField()
     music_url = models.TextField(blank=True)
     background_url = models.URLField(blank=True)
-    background_display_choice = models.CharField(max_length=255, default=BACKGROUND_TILED, choices=BACKGROUND_DISPLAY_CHOICES   ) 
+    background_display_choice = models.CharField(max_length=255, default=BACKGROUND_TILED, choices=BACKGROUND_DISPLAY_CHOICES)
+    marquee_banner_text = models.TextField(blank=True)
 
     def __str__(self):
         return self.name

@@ -651,7 +651,9 @@
         <span style="color:#334455;">Last Login: <strong style="color:#7799aa;">{{ event.date|date:"M d, Y" }}</strong></span>
       </div>
       <div style="margin-top:6px;">
-        <marquee scrollamount="3">&#10022; Can't wait to see everyone there!!! &#10022; RSVP NOW!! &#10022; It's gonna be EPIC!! &#9829; &#10022;</marquee>
+        {% if event.marquee_banner_text %}
+        <marquee scrollamount="3">{{ event.marquee_banner_text }}</marquee>
+        {% endif %}
       </div>
     </div>
   </div>
