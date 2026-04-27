@@ -631,7 +631,7 @@
                 <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128100;&#43;</span> RSVP</a></td>
               </tr>
               <tr>
-                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#9733;</span> Add to Favorites</a></td>
+                <td><a href="#" class="cbtn" id="add-to-favorites"><span class="cbtn-icon">&#9733;</span> Add to Favorites</a></td>
                 <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128228;</span> Forward to Friend</a></td>
               </tr>
             </table>
@@ -762,8 +762,43 @@
                 No comments yet!! be the first lol
               </div>
             {% endif %}
-            <div style="text-align:center;">
-              <a href="#" style="font-size:11px;">&#9998; Add Comment</a>
+            <div id="comment-footer">
+              <div id="add-comment-link" style="text-align:center;">
+                <a href="#" id="show-comment-form" style="font-size:11px;">&#9998; Add Comment</a>
+              </div>
+
+              <div id="comment-form-wrap" style="display:none; margin-top:8px;">
+                <form id="comment-form">
+                  {% csrf_token %}
+                  <div style="margin-bottom:5px;">
+                    <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Name *</label>
+                    <input type="text" name="username" required
+                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
+                  </div>
+                  <div style="margin-bottom:5px;">
+                    <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Comment *</label>
+                    <textarea name="post" required rows="3"
+                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px; resize:vertical;"></textarea>
+                  </div>
+                  <div style="margin-bottom:8px;">
+                    <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Avatar URL (optional)</label>
+                    <input type="url" name="avatar_url"
+                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
+                  </div>
+                  <div id="comment-form-error" style="display:none; color:#ee4444; font-size:10px; margin-bottom:6px;"></div>
+                  <div style="display:flex; gap:6px; justify-content:flex-end;">
+                    <a href="#" id="cancel-comment"
+                      style="font-size:11px; color:#557799; align-self:center;">Cancel</a>
+                    <button type="submit" class="cbtn" style="cursor:pointer;">
+                      &#9998; Post Comment
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div id="comment-pending" style="display:none; text-align:center; font-size:11px; color:#ffaa00; padding:4px 0;">
+                &#9203; Your comment is awaiting approval!
+              </div>
             </div>
           </div>
         </div>
@@ -796,10 +831,64 @@
     starsEl.appendChild(s);
   }
 
+  // Comment form
+  const showBtn    = document.getElementById('show-comment-form');
+  const cancelBtn  = document.getElementById('cancel-comment');
+  const formWrap   = document.getElementById('comment-form-wrap');
+  const addLink    = document.getElementById('add-comment-link');
+  const pending    = document.getElementById('comment-pending');
+  const form       = document.getElementById('comment-form');
+  const formError  = document.getElementById('comment-form-error');
+
+  showBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    addLink.style.display = 'none';
+    formWrap.style.display = 'block';
+  });
+
+  cancelBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    formWrap.style.display = 'none';
+    addLink.style.display = 'block';
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    formError.style.display = 'none';
+    const data = new FormData(form);
+    fetch('{% url "events:add_comment" event.id %}', {
+      method: 'POST',
+      headers: { 'X-CSRFToken': data.get('csrfmiddlewaretoken') },
+      body: data,
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(json) {
+      if (json.success) {
+        formWrap.style.display = 'none';
+        pending.style.display = 'block';
+      } else {
+        const msgs = Object.values(json.errors).flat().join(' ');
+        formError.textContent = msgs;
+        formError.style.display = 'block';
+      }
+    });
+  });
+
   // Under construction dialog
   const overlay = document.getElementById('uc-overlay');
   function closeUC() { overlay.classList.remove('open'); }
-  document.querySelectorAll('a[href="#"]').forEach(function(a) {
+  document.getElementById('add-to-favorites').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (window.sidebar && window.sidebar.addPanel) {
+      window.sidebar.addPanel(document.title, window.location.href, '');
+    } else if (window.external && ('AddFavorite' in window.external)) {
+      window.external.AddFavorite(window.location.href, document.title);
+    } else {
+      alert('Press ' + (/Mac/i.test(navigator.platform) ? '⌘' : 'Ctrl') + '+D to bookmark this page!');
+    }
+  });
+
+  document.querySelectorAll('a[href="#"]:not(#show-comment-form):not(#cancel-comment):not(#add-to-favorites)').forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
       overlay.classList.add('open');
