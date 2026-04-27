@@ -399,6 +399,83 @@
     .comment-name { color: #66bbff; font-weight: bold; font-size: 10px; }
     .comment-text { color: #aaccdd; font-size: 11px; margin-top: 2px; }
 
+    /* ===== UNDER CONSTRUCTION DIALOG ===== */
+    #uc-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+    #uc-overlay.open { display: flex; }
+    #uc-dialog {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      box-shadow: 2px 2px 0 #000;
+      width: 340px;
+      font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+      font-size: 11px;
+      color: #000;
+    }
+    #uc-titlebar {
+      background: linear-gradient(to right, #0a246a, #a6b8e8);
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #uc-titlebar span {
+      color: #fff;
+      font-weight: bold;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    #uc-close {
+      background: #d4d0c8;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      width: 16px; height: 14px;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      line-height: 1;
+    }
+    #uc-close:active { border-color: #808080 #fff #fff #808080; }
+    #uc-body {
+      padding: 16px 12px 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    #uc-icon { font-size: 32px; flex-shrink: 0; }
+    #uc-msg { line-height: 1.5; }
+    #uc-msg strong { display: block; margin-bottom: 6px; font-size: 12px; }
+    #uc-footer {
+      padding: 8px 12px 10px;
+      text-align: center;
+      border-top: 1px solid #808080;
+    }
+    #uc-ok {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      padding: 3px 24px;
+      font-family: Tahoma, Arial, sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      min-width: 75px;
+    }
+    #uc-ok:active { border-color: #808080 #ffffff #ffffff #808080; }
+
     /* ===== DIVIDER ===== */
     hr.myspace {
       border: none;
@@ -409,12 +486,33 @@
 </head>
 <body>
 
+<!-- Under Construction Dialog -->
+<div id="uc-overlay">
+  <div id="uc-dialog">
+    <div id="uc-titlebar">
+      <span>&#128187; MySpace</span>
+      <div id="uc-close" onclick="closeUC()">&#x2715;</div>
+    </div>
+    <div id="uc-body">
+      <div id="uc-icon">&#9888;</div>
+      <div id="uc-msg">
+        <strong>This page is under construction!</strong>
+        We r still working on this feature!! plz check back l8r :)<br><br>
+        <span style="color:#808080;">This site is best viewed in Internet Explorer 6.0<br>at 800x600 resolution.</span>
+      </div>
+    </div>
+    <div id="uc-footer">
+      <button id="uc-ok" onclick="closeUC()">OK</button>
+    </div>
+  </div>
+</div>
+
 <!-- Star field -->
 <div class="stars" id="stars"></div>
 
 <!-- Top nav bar -->
 <div id="topbar">
-  <div class="logo">My<span>Space</span></div>
+  <div class="logo">wedding<span>Space</span></div>
   <a href="#">Home</a>
   <a href="#">Browse</a>
   <a href="#">Search</a>
@@ -495,10 +593,12 @@
               <span class="detail-label">&#128506; Address:</span>
               <span class="detail-value">{{ event.location_address }}</span>
             </div>
+            {% if event.event_description %}
             <hr class="myspace">
             <div style="font-size:11px; color:#446677; font-style:italic; text-align:center;">
-              &ldquo;This event is gonna be totally 2 die 4!!!! lol omg brb ttyl&rdquo;
+              &ldquo;{{ event.event_description }}&rdquo;
             </div>
+            {% endif %}
           </div>
         </div>
 
@@ -509,19 +609,11 @@
             <table class="contact-table">
               <tr>
                 <td><a href="mailto:{{ event.contact_email }}" class="cbtn"><span class="cbtn-icon">&#9993;</span> Send Message</a></td>
-                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128172;</span> Instant Message</a></td>
-              </tr>
-              <tr>
                 <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128100;&#43;</span> RSVP</a></td>
+              </tr>
+              <tr>
                 <td><a href="#" class="cbtn"><span class="cbtn-icon">&#9733;</span> Add to Favorites</a></td>
-              </tr>
-              <tr>
                 <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128228;</span> Forward to Friend</a></td>
-                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128683;</span> Block User</a></td>
-              </tr>
-              <tr>
-                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#9878;</span> Rank User</a></td>
-                <td><a href="#" class="cbtn"><span class="cbtn-icon">&#128681;</span> Report</a></td>
               </tr>
             </table>
           </div>
@@ -678,6 +770,16 @@
     s.style.animationDuration = (1 + Math.random() * 3) + 's';
     starsEl.appendChild(s);
   }
+
+  // Under construction dialog
+  const overlay = document.getElementById('uc-overlay');
+  function closeUC() { overlay.classList.remove('open'); }
+  document.querySelectorAll('a[href="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      overlay.classList.add('open');
+    });
+  });
 
   // Cursor sparkle trail
   const colors = ['#3399ff','#00ccff','#ffffff','#66bbff','#0066cc','#aaddff'];

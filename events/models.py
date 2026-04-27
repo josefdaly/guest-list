@@ -5,6 +5,7 @@ class Event(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField()
     time = models.TimeField()
+    event_description = models.TextField(blank=True)
     location_name = models.CharField(max_length=255)
     location_address = models.CharField(max_length=255)
     contact_email = models.EmailField()
