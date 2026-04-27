@@ -255,6 +255,20 @@
       letter-spacing: 3px;
     }
 
+    /* ===== MUSIC EMBED ===== */
+    .music-embed-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+    .music-embed-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      border: 0;
+    }
+
     /* ===== MUSIC PLAYER ===== */
     .music-player {
       background: #000;
@@ -699,7 +713,7 @@
           <div class="section-header">&#9835; Event Playlist</div>
           <div class="section-body" style="padding:0;">
             {% if event.music_url %}
-              {{ event.music_url|safe }}
+              <div class="music-embed-wrap">{{ event.music_url|safe }}</div>
             {% else %}
               <div class="music-player">
                 <div class="music-title blink">&#9654; NOW PLAYING...</div>
