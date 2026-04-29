@@ -19,7 +19,7 @@
       font-family: 'Patrick Hand', 'Comic Sans MS', 'Chalkboard SE', cursive;
       color: #aaccee;
       min-height: 100vh;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%230066cc'/%3E%3C/svg%3E") 10 10, auto;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%230066cc'/%3E%3C/svg%3E") 10 10, auto;
     }
 
     {% if event.background_url %}
@@ -61,28 +61,76 @@
       to   { opacity: 1; }
     }
 
-    /* ===== TOP NAV BAR ===== */
+    /* ===== TOP BAR ===== */
     #topbar {
       position: relative;
       z-index: 10;
-      background: linear-gradient(to bottom, #4477aa, #112244);
-      padding: 6px 12px;
+      background: #000066;
+      padding: 8px 16px 10px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 11px;
-      color: #cce4ff;
+      justify-content: space-between;
     }
     #topbar .logo {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
       color: #fff;
       letter-spacing: -1px;
       text-shadow: 0 0 8px #3399ff;
+      flex-shrink: 0;
+      padding-bottom: 4px;
     }
-    #topbar .logo span { color: #aaddff; }
-    #topbar a { color: #99ccee; font-size: 11px; }
-    #topbar a:hover { color: #fff; }
+    #topbar .logo span { color: #6699ff; }
+    #topbar .topbar-right { display: flex; align-items: center; gap: 12px; }
+    #topbar .topbar-search { display: flex; align-items: center; gap: 6px; }
+    #topbar .topbar-search input {
+      padding: 3px 8px;
+      font-size: 12px;
+      border: 1px solid #4466bb;
+      border-radius: 3px;
+      background: #0a1a66;
+      color: #fff;
+      width: 180px;
+      font-family: inherit;
+    }
+    #topbar .topbar-search input::placeholder { color: #7799cc; }
+    #topbar .topbar-search button {
+      padding: 3px 10px;
+      font-size: 12px;
+      background: #2255cc;
+      color: #fff;
+      border: 1px solid #4477dd;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    #topbar .topbar-links { display: flex; align-items: center; font-size: 12px; }
+    #topbar .topbar-links a { color: #aac0ff; padding: 0 10px; border-right: 1px solid #334488; }
+    #topbar .topbar-links a:last-child { border-right: none; }
+    #topbar .topbar-links a:hover { color: #fff; text-decoration: none; }
+
+    /* ===== NAVBAR ===== */
+    #navbar {
+      position: relative;
+      z-index: 10;
+      background: #3366cc;
+      padding: 0 12px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #2255bb;
+    }
+    #navbar a {
+      color: #ddeeff;
+      font-size: 11px;
+      padding: 0 8px;
+      border-right: 1px solid #5588dd;
+      line-height: 1;
+    }
+    #navbar a:first-child { padding-left: 0; }
+    #navbar a:last-child { border-right: none; }
+    #navbar a:hover { color: #fff; text-decoration: none; }
 
     /* ===== PAGE WRAPPER ===== */
     #wrapper {
@@ -577,9 +625,10 @@
 
     /* ===== MOBILE ===== */
     @media (max-width: 640px) {
-      #topbar { gap: 10px; flex-wrap: wrap; padding: 8px 12px; }
-      #topbar .logo { font-size: 20px; width: 100%; margin-bottom: 2px; }
-      #topbar a { font-size: 12px; }
+      #topbar { height: auto; flex-wrap: wrap; padding: 6px 12px; gap: 6px; }
+      #topbar .topbar-search { order: 3; width: 100%; }
+      #topbar .topbar-search input { width: 100%; }
+      #navbar { flex-wrap: wrap; height: auto; padding: 4px 12px; gap: 2px; }
 
       #profile-header { flex-direction: column; align-items: center; text-align: center; }
       #profile-pic { width: 100px; height: 100px; }
@@ -656,12 +705,25 @@
 <!-- Star field -->
 <div class="stars" id="stars"></div>
 
-<!-- Top nav bar -->
+<!-- Top bar -->
 <div id="topbar">
   <div class="logo">our<span>Space</span></div>
+  <div class="topbar-right">
+    <form class="topbar-search" action="https://www.google.com/search" method="get" target="_blank">
+      <input type="text" name="q" placeholder="Search the web">
+      <button type="submit">Search</button>
+    </form>
+    <div class="topbar-links">
+      <a href="#">Help</a>
+      <a href="#">Sign Out</a>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<div id="navbar">
   <a href="#">Home</a>
   <a href="#">Browse</a>
-  <a href="#">Search</a>
   <a href="#">Invite</a>
   <a href="#">Film</a>
   <a href="#">Mail</a>
@@ -674,9 +736,6 @@
   <a href="#">Music</a>
   <a href="#">Comedy</a>
   <a href="#">Classifieds</a>
-  &nbsp;|&nbsp;
-  <a href="#">Sign Up</a>
-  <a href="#">Login</a>
 </div>
 
 <div id="wrapper">
