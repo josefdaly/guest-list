@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Guest List{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>Guest List</h2>
+  <span class="text-muted">{{ guests.count }} guest{{ guests.count|pluralize }} &mdash; add guests via the <a href="/admin/guests/guest/">Django admin</a></span>
+</div>
+
+<div class="table-wrap">
+  {% if guests %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>RSVP</th>
+        <th>Guests (+)</th>
+        <th>Confirmed (+)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for guest in guests %}
+      <tr>
+        <td><strong>{{ guest.first_name }} {{ guest.last_name }}</strong></td>
+        <td class="text-muted">{{ guest.email }}</td>
+        <td>
+          {% if guest.rsvp_status == True %}
+            <span class="badge badge-green">Going</span>
+          {% elif guest.rsvp_status == False %}
+            <span class="badge badge-red">Declined</span>
+          {% else %}
+            <span class="badge badge-yellow">Pending</span>
+          {% endif %}
+        </td>
+        <td class="text-muted">{{ guest.additional_guests }}</td>
+        <td class="text-muted">{{ guest.additional_confirmed }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">No guests yet. Add them via the <a href="/admin/guests/guest/">Django admin</a>.</div>
+  {% endif %}
+</div>
+{% endblock %}

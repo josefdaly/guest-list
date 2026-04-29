@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>Blog Posts</h2>
+  <a href="{% url 'dashboard:post_create' %}" class="btn btn-primary">+ New post</a>
+</div>
+
+<div class="table-wrap">
+  {% if posts %}
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td><strong>{{ post.title }}</strong></td>
+        <td><span class="badge badge-gray">{{ post.category }}</span></td>
+        <td class="text-muted">{{ post.created_at|date:"M j, Y" }}</td>
+        <td>
+          <div class="actions">
+            <a href="{% url 'dashboard:post_edit' post.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+            <form method="post" action="{% url 'dashboard:post_delete' post.pk %}" style="display:inline;" onsubmit="return confirm('Delete this post?')">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">No blog posts yet. <a href="{% url 'dashboard:post_create' %}">Create the first one.</a></div>
+  {% endif %}
+</div>
+{% endblock %}

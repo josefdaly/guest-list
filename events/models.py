@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -21,6 +22,13 @@ class Event(models.Model):
     background_url = models.URLField(blank=True)
     background_display_choice = models.CharField(max_length=255, default=BACKGROUND_TILED, choices=BACKGROUND_DISPLAY_CHOICES)
     marquee_banner_text = models.TextField(blank=True)
+    owner = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='event',
+    )
 
     def __str__(self):
         return self.name

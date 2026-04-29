@@ -1,0 +1,56 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>Comments</h2>
+</div>
+
+<div class="table-wrap">
+  {% if comments %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Comment</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for comment in comments %}
+      <tr>
+        <td><strong>{{ comment.username }}</strong></td>
+        <td class="truncate">{{ comment.post }}</td>
+        <td class="text-muted">{{ comment.created_at|date:"M j, Y" }}</td>
+        <td>
+          {% if comment.approved %}
+            <span class="badge badge-green">Approved</span>
+          {% else %}
+            <span class="badge badge-yellow">Pending</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="actions">
+            {% if not comment.approved %}
+            <form method="post" action="{% url 'dashboard:comment_approve' comment.pk %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success btn-sm">Approve</button>
+            </form>
+            {% endif %}
+            <form method="post" action="{% url 'dashboard:comment_delete' comment.pk %}" style="display:inline;" onsubmit="return confirm('Delete this comment?')">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">No comments yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

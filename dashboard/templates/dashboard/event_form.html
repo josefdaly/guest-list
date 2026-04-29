@@ -1,0 +1,99 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{% if event %}Edit Event{% else %}Create Event{% endif %}{% endblock %}
+
+{% block content %}
+<h2>{% if event %}Edit Event{% else %}Create Event{% endif %}</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="form-section">
+    <div class="form-section-title">Basic info</div>
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Event name</label>
+      {{ form.name }}
+      {% for e in form.name.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.date.id_for_label }}">Date</label>
+        {{ form.date }}
+        {% for e in form.date.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.time.id_for_label }}">Time</label>
+        {{ form.time }}
+        {% for e in form.time.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ form.event_description.id_for_label }}">Description</label>
+      {{ form.event_description }}
+      {% for e in form.event_description.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-section-title">Location &amp; contact</div>
+    <div class="form-group">
+      <label for="{{ form.location_name.id_for_label }}">Venue name</label>
+      {{ form.location_name }}
+      {% for e in form.location_name.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.location_address.id_for_label }}">Address</label>
+      {{ form.location_address }}
+      {% for e in form.location_address.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.contact_email.id_for_label }}">Contact email</label>
+      {{ form.contact_email }}
+      {% for e in form.contact_email.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-section-title">Appearance</div>
+    <div class="form-group">
+      <label for="{{ form.profile_photo.id_for_label }}">Profile photo URL</label>
+      {{ form.profile_photo }}
+      {% if form.profile_photo.help_text %}<div class="help-text">{{ form.profile_photo.help_text }}</div>{% endif %}
+      {% for e in form.profile_photo.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.background_url.id_for_label }}">Background image URL</label>
+        {{ form.background_url }}
+        {% if form.background_url.help_text %}<div class="help-text">{{ form.background_url.help_text }}</div>{% endif %}
+        {% for e in form.background_url.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.background_display_choice.id_for_label }}">Background display</label>
+        {{ form.background_display_choice }}
+        {% for e in form.background_display_choice.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ form.marquee_banner_text.id_for_label }}">Marquee banner text</label>
+      {{ form.marquee_banner_text }}
+      {% if form.marquee_banner_text.help_text %}<div class="help-text">{{ form.marquee_banner_text.help_text }}</div>{% endif %}
+      {% for e in form.marquee_banner_text.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-section-title">Music</div>
+    <div class="form-group">
+      <label for="{{ form.music_url.id_for_label }}">Music embed</label>
+      {{ form.music_url }}
+      {% if form.music_url.help_text %}<div class="help-text">{{ form.music_url.help_text }}</div>{% endif %}
+      {% for e in form.music_url.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">{% if event %}Save changes{% else %}Create event{% endif %}</button>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

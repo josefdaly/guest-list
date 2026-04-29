@@ -1,0 +1,64 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if not event %}
+  <h2>Welcome</h2>
+  <div class="alert alert-info">
+    You don't have an event yet. Set one up to get started.
+  </div>
+  <a href="{% url 'dashboard:event_edit' %}" class="btn btn-primary">Create your event</a>
+
+{% else %}
+  <div class="page-header">
+    <h2>{{ event.name }}</h2>
+    <a href="{% url 'events:detail' event.pk %}" class="btn btn-secondary" target="_blank">View event page ↗</a>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-number">{{ total_attending }}</div>
+      <div class="stat-label">Attending</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" style="color:#1a6e35;">{{ confirmed_count }}</div>
+      <div class="stat-label">Confirmed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" style="color:#cc1a00;">{{ declined_count }}</div>
+      <div class="stat-label">Declined</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" style="color:#8a6500;">{{ pending_count }}</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">{{ post_count }}</div>
+      <div class="stat-label">Blog Posts</div>
+    </div>
+  </div>
+
+  {% if pending_comments %}
+  <div class="alert alert-warn">
+    <strong>{{ pending_comments }} comment{{ pending_comments|pluralize }}</strong> awaiting approval.
+    <a href="{% url 'dashboard:comments' %}">Review now →</a>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-title">Event details</div>
+    <table>
+      <tr><td style="width:130px; color:#888; font-size:12px;">Date</td><td>{{ event.date|date:"l, F j, Y" }}</td></tr>
+      <tr><td style="color:#888; font-size:12px;">Time</td><td>{{ event.time|time:"g:i A" }}</td></tr>
+      <tr><td style="color:#888; font-size:12px;">Venue</td><td>{{ event.location_name }}</td></tr>
+      <tr><td style="color:#888; font-size:12px;">Address</td><td>{{ event.location_address }}</td></tr>
+      <tr><td style="color:#888; font-size:12px;">Contact</td><td>{{ event.contact_email }}</td></tr>
+    </table>
+    <div style="margin-top:14px;">
+      <a href="{% url 'dashboard:event_edit' %}" class="btn btn-secondary btn-sm">Edit details</a>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock %}

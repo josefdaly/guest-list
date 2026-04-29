@@ -1,0 +1,35 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ action }}{% endblock %}
+
+{% block content %}
+<h2>{{ action }}</h2>
+
+<form method="post" style="max-width: 640px;">
+  {% csrf_token %}
+
+  <div class="form-row" style="margin-bottom:14px;">
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}">Title</label>
+      {{ form.title }}
+      {% for e in form.title.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.category.id_for_label }}">Category</label>
+      {{ form.category }}
+      {% for e in form.category.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.content.id_for_label }}">Content</label>
+    {{ form.content }}
+    {% if form.content.help_text %}<div class="help-text">{{ form.content.help_text }}</div>{% endif %}
+    {% for e in form.content.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'dashboard:posts' %}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

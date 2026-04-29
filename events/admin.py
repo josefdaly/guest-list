@@ -15,4 +15,8 @@ class EventCommentAdmin(admin.ModelAdmin):
     list_editable = ('approved',)
     list_filter = ('approved', 'event')
 
-admin.site.register(Event)
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date', 'owner')
+    list_select_related = ('owner',)
+    raw_id_fields = ('owner',)
