@@ -781,9 +781,8 @@
 
         <!-- About Me -->
         <div class="section">
-          <div class="section-header">&#9733; About This Event</div>
+          <div class="section-header">&#9733; {{ event.name }}'s Details</div>
           <div class="section-body">
-            <div class="glitter-header">{{ event.name }}</div>
             <div class="detail-row">
               <span class="detail-label">&#128197; Date:</span>
               <span class="detail-value">{{ event.date|date:"l, F j, Y" }}</span>
@@ -799,6 +798,10 @@
             <div class="detail-row">
               <span class="detail-label">&#128506; Address:</span>
               <span class="detail-value">{{ event.location_address }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">&#10084; Relationship Status:</span>
+              <span class="detail-value">almost married</span>
             </div>
             {% if event.event_description %}
             <hr class="myspace">
