@@ -13,7 +13,7 @@
 {% else %}
   <div class="page-header">
     <h2>{{ event.name }}</h2>
-    <a href="{% url 'events:detail' event.pk %}" class="btn btn-secondary" target="_blank">View event page ↗</a>
+    <a href="{% if event.url_slug %}/{{ event.url_slug }}/{% else %}{% url 'events:detail' event.pk %}{% endif %}" class="btn btn-secondary" target="_blank">View event page ↗</a>
   </div>
 
   <div class="stat-row">

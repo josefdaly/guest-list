@@ -7,9 +7,7 @@ from .forms import EventCommentForm
 from .models import Event, EventComment, EventPost
 
 
-@xframe_options_exempt
-def event_detail(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
+def _render_event(request, event):
     guests = event.guests.all()
     confirmed = guests.filter(rsvp_status=True)
     declined = guests.filter(rsvp_status=False)
@@ -29,6 +27,18 @@ def event_detail(request, event_id):
         'comments': comments,
         'comment_form': comment_form,
     })
+
+
+@xframe_options_exempt
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    return _render_event(request, event)
+
+
+@xframe_options_exempt
+def event_detail_by_slug(request, url_slug):
+    event = get_object_or_404(Event, url_slug=url_slug)
+    return _render_event(request, event)
 
 
 @require_POST

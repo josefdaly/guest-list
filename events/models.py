@@ -11,6 +11,7 @@ class Event(models.Model):
     )
 
     name = models.CharField(max_length=255)
+    url_slug = models.CharField(blank=True, max_length=255)
     date = models.DateField()
     time = models.TimeField()
     event_description = models.TextField(blank=True)
