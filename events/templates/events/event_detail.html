@@ -66,7 +66,6 @@
       position: relative;
       z-index: 10;
       background: linear-gradient(to bottom, #4477aa, #112244);
-      border-bottom: 2px solid #336699;
       padding: 6px 12px;
       display: flex;
       align-items: center;
@@ -97,7 +96,6 @@
     /* ===== PROFILE HEADER ===== */
     #profile-header {
       background: linear-gradient(135deg, #001a33 0%, #000a22 100%);
-      border: 2px solid #336699;
       border-radius: 4px;
       padding: 12px;
       margin-bottom: 8px;
@@ -110,7 +108,6 @@
     #profile-pic {
       width: 120px;
       height: 120px;
-      border: 3px solid #336699;
       background: #000a1a;
       display: flex;
       align-items: center;
@@ -150,7 +147,6 @@
     .mood-box {
       display: inline-block;
       background: #001122;
-      border: 1px solid #33669955;
       padding: 3px 8px;
       font-size: 11px;
       color: #99ccee;
@@ -168,7 +164,6 @@
     /* ===== SECTION BOXES ===== */
     .section {
       background: #000d1a;
-      border: 1px solid #2a5580;
       margin-bottom: 8px;
     }
     .section-header {
@@ -179,7 +174,6 @@
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 1px;
-      border-bottom: 1px solid #33669944;
     }
     .section-body {
       padding: 10px;
@@ -218,9 +212,6 @@
       align-items: center;
       gap: 6px;
       background: linear-gradient(to bottom, #001e3a, #001228);
-      border: 1px solid #2a5580;
-      border-bottom-color: #1a3a55;
-      border-right-color: #1a3a55;
       padding: 4px 7px;
       font-size: 11px;
       color: #66bbff;
@@ -275,7 +266,6 @@
     /* ===== MUSIC PLAYER ===== */
     .music-player {
       background: #000;
-      border: 1px solid #33669944;
       padding: 8px;
       text-align: center;
     }
@@ -329,7 +319,7 @@
       position: relative;
       z-index: 1;
       text-align: center;
-      font-size: 9px;
+      font-size: 13px;
       color: #223344;
       padding: 16px 0 24px;
     }
@@ -376,7 +366,6 @@
     .top8-avatar {
       width: 70px; height: 70px;
       background: #001a33;
-      border: 1px solid #33669955;
       margin: 0 auto 3px;
       display: flex;
       align-items: center;
@@ -417,7 +406,6 @@
 
     /* ===== COMMENTS SECTION ===== */
     .comment {
-      border-bottom: 1px solid #111e2a;
       padding: 6px 0;
       display: flex;
       gap: 8px;
@@ -426,7 +414,6 @@
     .comment-avatar {
       width: 40px; height: 40px;
       background: #001a33;
-      border: 1px solid #33669944;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -512,6 +499,74 @@
       min-width: 75px;
     }
     #uc-ok:active { border-color: #808080 #ffffff #ffffff #808080; }
+
+    /* ===== WEBMASTER DIALOG ===== */
+    #wm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+    #wm-overlay.open { display: flex; }
+    #wm-dialog {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      box-shadow: 2px 2px 0 #000;
+      width: 320px;
+      font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+      font-size: 11px;
+      color: #000;
+    }
+    #wm-titlebar {
+      background: linear-gradient(to right, #0a246a, #a6b8e8);
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #wm-titlebar span { color: #fff; font-weight: bold; font-size: 11px; }
+    #wm-close {
+      background: #d4d0c8;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      width: 16px; height: 14px;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+    }
+    #wm-close:active { border-color: #808080 #fff #fff #808080; }
+    #wm-body {
+      padding: 16px 12px 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    #wm-icon { font-size: 32px; flex-shrink: 0; }
+    #wm-msg strong { display: block; margin-bottom: 4px; font-size: 12px; }
+    #wm-footer {
+      padding: 8px 12px 10px;
+      text-align: center;
+      border-top: 1px solid #808080;
+    }
+    #wm-ok {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      padding: 3px 24px;
+      font-family: Tahoma, Arial, sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      min-width: 75px;
+    }
+    #wm-ok:active { border-color: #808080 #ffffff #ffffff #808080; }
 
     /* ===== DIVIDER ===== */
     hr.myspace {
@@ -847,17 +902,17 @@
                   <div style="margin-bottom:5px;">
                     <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Name *</label>
                     <input type="text" name="username" required
-                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
+                      style="width:100%; background:#001122; border:none; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
                   </div>
                   <div style="margin-bottom:5px;">
                     <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Comment *</label>
                     <textarea name="post" required rows="3"
-                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px; resize:vertical;"></textarea>
+                      style="width:100%; background:#001122; border:none; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px; resize:vertical;"></textarea>
                   </div>
                   <div style="margin-bottom:8px;">
                     <label style="font-size:10px; color:#66aadd; display:block; margin-bottom:2px;">Avatar URL (optional)</label>
                     <input type="url" name="avatar_url"
-                      style="width:100%; background:#001122; border:1px solid #2a5580; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
+                      style="width:100%; background:#001122; border:none; color:#cce4ff; padding:4px 6px; font-family:'Comic Sans MS',cursive; font-size:11px;">
                   </div>
                   <div id="comment-form-error" style="display:none; color:#ee4444; font-size:10px; margin-bottom:6px;"></div>
                   <div style="display:flex; gap:6px; justify-content:flex-end;">
@@ -884,12 +939,34 @@
 
 </div>
 
+<!-- Webmaster Dialog -->
+<div id="wm-overlay">
+  <div id="wm-dialog">
+    <div id="wm-titlebar">
+      <span>&#128187; About this Page</span>
+      <div id="wm-close" onclick="closeWM()">&#x2715;</div>
+    </div>
+    <div id="wm-body">
+      <div id="wm-icon">&#127760;</div>
+      <div id="wm-msg">
+        <strong>Page designed by:</strong>
+        <div style="margin:6px 0 4px; font-size:13px; color:#0000aa;">Joseph Daly</div>
+        <div><a href="mailto:josefdaly@gmail.com" style="color:#0000ee;">josefdaly@gmail.com</a></div>
+        <div style="margin-top:8px; color:#808080; font-size:10px;">Best viewed in Internet Explorer 5.0<br>at 800x600 resolution &#128512;</div>
+      </div>
+    </div>
+    <div id="wm-footer">
+      <button id="wm-ok" onclick="closeWM()">OK</button>
+    </div>
+  </div>
+</div>
+
 <div id="footer">
-  &copy; 2003 ourSpace Inc. &bull; <a href="#" style="color:#223344;">About</a> &bull;
-  <a href="#" style="color:#223344;">FAQ</a> &bull;
-  <a href="#" style="color:#223344;">Terms</a> &bull;
-  <a href="#" style="color:#223344;">Privacy</a> &bull;
-  <a href="#" style="color:#223344;">Safety Tips</a>
+  &copy; 2003 ourSpace Inc. &bull; <a href="#" class="footer-link" style="color:#223344;">About</a> &bull;
+  <a href="#" class="footer-link" style="color:#223344;">FAQ</a> &bull;
+  <a href="#" class="footer-link" style="color:#223344;">Terms</a> &bull;
+  <a href="#" class="footer-link" style="color:#223344;">Privacy</a> &bull;
+  <a href="#" class="footer-link" style="color:#223344;">Safety Tips</a>
 </div>
 
 <script>
@@ -962,10 +1039,20 @@
     }
   });
 
-  document.querySelectorAll('a[href="#"]:not(#show-comment-form):not(#cancel-comment):not(#add-to-favorites)').forEach(function(a) {
+  document.querySelectorAll('a[href="#"]:not(#show-comment-form):not(#cancel-comment):not(#add-to-favorites):not(.footer-link)').forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
       overlay.classList.add('open');
+    });
+  });
+
+  // Webmaster dialog
+  const wmOverlay = document.getElementById('wm-overlay');
+  function closeWM() { wmOverlay.classList.remove('open'); }
+  document.querySelectorAll('.footer-link').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      wmOverlay.classList.add('open');
     });
   });
 
