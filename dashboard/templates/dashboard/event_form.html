@@ -37,6 +37,12 @@
       {{ form.event_description }}
       {% for e in form.event_description.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
     </div>
+    <div class="form-group">
+      <label for="{{ form.relationship_status.id_for_label }}">Relationship status</label>
+      {{ form.relationship_status }}
+      <div class="help-text">Optional. Shown in the event details block (e.g. "It's complicated").</div>
+      {% for e in form.relationship_status.errors %}<div class="error-text">{{ e }}</div>{% endfor %}
+    </div>
   </div>
 
   <div class="form-section">

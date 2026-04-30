@@ -23,6 +23,7 @@ class Event(models.Model):
     background_url = models.URLField(blank=True)
     background_display_choice = models.CharField(max_length=255, default=BACKGROUND_TILED, choices=BACKGROUND_DISPLAY_CHOICES)
     marquee_banner_text = models.TextField(blank=True)
+    relationship_status = models.CharField(blank=True)
     owner = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         null=True,

@@ -799,10 +799,12 @@
               <span class="detail-label">&#128506; Address:</span>
               <span class="detail-value">{{ event.location_address }}</span>
             </div>
+            {% if event.relationship_status %}
             <div class="detail-row">
               <span class="detail-label">&#10084; Relationship Status:</span>
-              <span class="detail-value">almost married</span>
+              <span class="detail-value">{{ event.relationship_status }}</span>
             </div>
+            {% endif %}
             {% if event.event_description %}
             <hr class="myspace">
             <div style="font-size:11px; color:#446677; font-style:italic; text-align:center;">
